@@ -2,8 +2,10 @@ using System;
 using Infrastructure.Data;
 using Infrastructure.Infrastructure;
 using Infrastructure.Seeds;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using permissionproject.Permission;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,12 +24,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>options.ValidationInterval=TimeSpan.Zero); //⁄‘«‰ «Ì  ⁄œÌ· ··»Ì—„Ì‘‰ ÌŸÂ— „‰ €Ì— —Ì›—Ì‘
 //builder.Services.Configure<IdentityOptions>(options =>
 //{
 //    options.SignIn.RequireConfirmedEmail = false;
 //    options.SignIn.RequireConfirmedPhoneNumber = false;
 //});
 
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {

@@ -1,10 +1,8 @@
-﻿@using Infrastructure.ViewModels
-@using static Domain.Entities.Helper
+﻿
 
 @model PermissionVM
 @{
     ViewData["Title"] = "Role Permissions";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 
@@ -13,7 +11,7 @@
 
 <div class="card">
     <div id="viewAll" class="card-body table-responsive">
-        <form asp-controller="permissions" method="post" asp-action="Update" class="d-inline">
+        <form asp-controller="Permission" method="post" asp-action="Update" class="d-inline">
             <input asp-for="@Model.RoleId" type="hidden" />
 
             <table class="table table-striped" id="permissionTable">

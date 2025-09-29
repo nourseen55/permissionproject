@@ -1,4 +1,6 @@
-﻿using Domain.Constants;
+﻿using System.Security.Claims;
+using Domain.Constants;
+using Domain.Entities;
 using Infrastructure.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +21,7 @@ namespace permissionproject.Areas.Admin.Controllers
         public async Task<IActionResult> Index(string RoleId)
         {
             var role = await _roleManager.FindByIdAsync(RoleId);
-            var claims = _roleManager.GetClaimsAsync(role).Result.Select(x => x.Value).ToList();
+            var claims =  _roleManager.GetClaimsAsync(role).Result.Select(x => x.Value).ToList();
             var allPermissions =Permessions.PermissionList()
                 .Select(x => new RolesClaimsVM { Value = x }).ToList();
 
@@ -34,6 +36,25 @@ namespace permissionproject.Areas.Admin.Controllers
                 RolesClaims = allPermissions
             });
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Update(PermissionVM permissionVM)
+         {
+            var role =await _roleManager.FindByIdAsync(permissionVM.RoleId);
+            var allclaims=await _roleManager.GetClaimsAsync(role);
+            foreach (var item in allclaims)
+                await _roleManager.RemoveClaimAsync(role, item);
+            var selectedclaims=permissionVM.RolesClaims.Where(x=>x.Selected).ToList();
+            foreach (var item in selectedclaims)
+                await _roleManager.AddClaimAsync(role, new Claim(Helper.Permession, item.Value));
+          
+            return RedirectToAction("Index","Roles");
 
-    }
+
+        }
+
+
+        }
+
+    
 }

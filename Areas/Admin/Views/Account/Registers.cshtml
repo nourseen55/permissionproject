@@ -1,0 +1,71 @@
+﻿@model Infrastructure.ViewModels.RegisterViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Register User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Register User</h2>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Success))
+    {
+        <div class="alert alert-success">@ViewBag.Success</div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <form asp-action="Registers" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+
+                <div class="form-group mb-2">
+                    <label asp-for="NewRegister.Name"></label>
+                    <input asp-for="NewRegister.Name" class="form-control" />
+                    <span asp-validation-for="NewRegister.Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label asp-for="NewRegister.Email"></label>
+                    <input asp-for="NewRegister.Email" class="form-control" />
+                    <span asp-validation-for="NewRegister.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label asp-for="NewRegister.Password"></label>
+                    <input asp-for="NewRegister.Password" class="form-control" />
+                    <span asp-validation-for="NewRegister.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label asp-for="NewRegister.ConfirmPassword"></label>
+                    <input asp-for="NewRegister.ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="NewRegister.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label asp-for="NewRegister.ImageFile">Upload Image</label>
+                    <input asp-for="NewRegister.ImageFile" type="file" class="form-control" />
+                    <span asp-validation-for="NewRegister.ImageFile" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group form-check mb-2">
+                    <input asp-for="NewRegister.IsActive" class="form-check-input" />
+                    <label asp-for="NewRegister.IsActive" class="form-check-label"></label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

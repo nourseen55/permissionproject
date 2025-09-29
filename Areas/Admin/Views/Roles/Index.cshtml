@@ -1,0 +1,100 @@
+﻿@using Infrastructure.ViewModels
+@model RolesVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper">
+    <!-- Content Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-4 align-items-center">
+                <div class="col-sm-6">
+                    <h1 class="fw-bold text-primary">
+                        <i class="fas fa-users-cog me-2"></i> Roles Management
+                    </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right bg-white rounded shadow-sm px-3 py-2">
+                        <li class="breadcrumb-item">
+                            <a href="/Admin/Home/Index" class="text-decoration-none text-primary">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">Roles</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Content Header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-header bg-gradient-primary text-white d-flex align-items-center justify-content-between">
+                        <h3 class="card-title fw-bold">
+                            <i class="fas fa-list me-2"></i> Roles List
+                        </h3>
+                        @* <a class="btn btn-light btn-sm shadow-sm">
+                            <i class="fas fa-plus"></i> Add New Role
+                        </a> *@
+                    </div>
+                    <!-- /.card-header -->
+
+                    <div class="card-body">
+                        <table id="tableRole" class="table table-hover table-striped align-middle shadow-sm">
+                            <thead class="bg-light text-primary">
+                                <tr>
+                                    <th style="width:60%">Role Name</th>
+                                    <th style="width:40%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Roles)
+                                {
+                                    <tr>
+                                        <td>
+                                            @switch (@item.Name)
+                                            {
+                                                case "SuperAdmin":
+                                                    <span class="badge bg-danger px-4 py-2 fs-6 shadow-sm">@item.Name</span>
+                                                    break;
+                                                case "Admin":
+                                                    <span class="badge bg-success px-4 py-2 fs-6 shadow-sm">@item.Name</span>
+                                                    break;
+                                                default:
+                                                    <span class="badge bg-warning text-dark px-4 py-2 fs-6 shadow-sm">@item.Name</span>
+                                                    break;
+                                            }
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-outline-primary btn-sm shadow-sm"
+                                               asp-area="Admin"
+                                               asp-controller="Permission"
+                                               asp-action="Index"
+                                               asp-route-RoleId="@item.Id.ToString()">
+                                                <i class="fas fa-key me-1"></i>
+                                                Manage Permissions
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
